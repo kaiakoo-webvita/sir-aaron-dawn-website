@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sir Aaron Dawn — Sound beyond Gravity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg:      #f0f4f7;
+    --petrol:  #1e3a4a;
+    --mid:     #3a5a6e;
+    --muted:   #7a9aaa;
+    --accent:  #4a8fa8;
+    --font:    'Tenor Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--petrol);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(180,210,230,0.6) 0%, transparent 58%),
+      radial-gradient(ellipse at 15% 85%, rgba(160,195,215,0.18) 0%, transparent 45%),
+      radial-gradient(ellipse at 85% 70%, rgba(140,185,210,0.12) 0%, transparent 40%),
+      linear-gradient(180deg, #e6eff6 0%, #f2f6f9 45%, #edf2f6 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body > * { position: relative; z-index: 1; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.75rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s;
+  }
+
+  nav.scrolled {
+    background: rgba(240,244,247,0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 1px 0 rgba(74,143,168,0.1);
+  }
+
+  .nav-wordmark {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-sir  { font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--accent); }
+  .nav-name { font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--petrol); }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+
+  .nav-links a {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--petrol); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 6rem;
+    position: relative;
+  }
+
+  /* 3D Kugel */
+  .hero-sphere {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 0;
+    position: relative;
+    animation: float 7s ease-in-out infinite;
+  }
+
+  /* Schatten unter der Kugel */
+  .hero-sphere::after {
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 12px;
+    background: radial-gradient(ellipse, rgba(74,143,168,0.28) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(4px);
+    animation: shadowPulse 7s ease-in-out infinite;
+  }
+
+  @keyframes shadowPulse {
+    0%, 100% { width: 90px; opacity: 0.8; }
+    50%       { width: 75px; opacity: 0.5; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-14px); }
+  }
+
+  /* Orbit-Ring rotiert langsam */
+  .orbit-ring {
+    animation: orbitSpin 18s linear infinite;
+    transform-origin: 75px 75px;
+  }
+
+  @keyframes orbitSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* Spacer zwischen Kugel und Wordmark */
+  .hero-spacer { height: 2.8rem; }
+
+  .hero-wordmark {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 1.4rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.4s forwards;
+  }
+
+  .hero-sir {
+    font-size: clamp(28px, 5vw, 58px);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .hero-name {
+    font-size: clamp(28px, 5vw, 58px);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--petrol);
+    font-weight: 400;
+  }
+
+  .hero-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 0 auto 1.6rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.65s forwards;
+  }
+
+  .hero-tagline {
+    font-size: 10px;
+    letter-spacing: 0.48em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.85s forwards;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: fadeUp 1s ease 1.3s forwards;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+    margin: 0 auto;
+    animation: scrollPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.25; }
+    50%       { opacity: 0.7; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(74,143,168,0.18), transparent);
+  }
+
+  /* ── SEKTIONEN ── */
+  .section {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 7rem 2rem;
+  }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.44em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+
+  .section-title {
+    font-size: clamp(20px, 3vw, 32px);
+    letter-spacing: 0.08em;
+    color: var(--petrol);
+    font-weight: 400;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  /* ── ABOUT ── */
+  .about-text {
+    color: var(--mid);
+    font-size: 14px;
+    line-height: 1.95;
+    max-width: 580px;
+  }
+  .about-text p { margin-bottom: 1rem; }
+  .about-text p:last-child { margin-bottom: 0; }
+  .about-text strong { color: var(--petrol); font-weight: 400; }
+  .about-text em     { color: var(--accent);  font-style: normal; }
+
+  /* ── LISTEN ── */
+  .listen-intro {
+    color: var(--mid);
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    max-width: 480px;
+  }
+
+  .platform-buttons { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+
+  .platform-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 2.2rem;
+    height: 52px;
+    border-radius: 52px;
+    border: 1px solid rgba(74,143,168,0.28);
+    text-decoration: none;
+    font-family: var(--font);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--mid);
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.25s, box-shadow 0.25s;
+    white-space: nowrap;
+  }
+
+  .platform-btn:hover {
+    background: rgba(255,255,255,0.92);
+    border-color: var(--accent);
+    color: var(--petrol);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(74,143,168,0.15);
+  }
+
+  .platform-btn svg { flex-shrink: 0; opacity: 0.55; transition: opacity 0.3s; }
+  .platform-btn:hover svg { opacity: 1; }
+
+  /* ── CONTACT ── */
+  .contact-text {
+    color: var(--mid);
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    max-width: 480px;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(74,143,168,0.22);
+    padding-bottom: 3px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .contact-link:hover { color: var(--petrol); border-color: var(--petrol); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 3rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .footer-wordmark { display: flex; align-items: baseline; gap: 8px; }
+  .footer-sir  { font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); }
+  .footer-name { font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--petrol); }
+
+  .footer-meta {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.9;
+  }
+  .footer-meta a { color: var(--muted); text-decoration: none; transition: color 0.3s; }
+  .footer-meta a:hover { color: var(--petrol); }
+  .footer-copy { font-size: 8px; opacity: 0.38; margin-top: 3px; letter-spacing: 0.12em; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .nav-links { display: none; }
+    .section { padding: 5rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; align-items: flex-start; }
+    .footer-meta { text-align: left; }
+    .platform-buttons { flex-direction: column; }
+    .platform-btn { justify-content: center; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#top" class="nav-wordmark">
+    <span class="nav-sir">Sir</span>
+    <span class="nav-name">Aaron Dawn</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#listen">Music</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+
+  <div class="hero-sphere">
+    <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="sphereGrad" cx="36%" cy="26%" r="68%" fx="36%" fy="26%">
+          <stop offset="0%"   stop-color="#ffffff"/>
+          <stop offset="20%"  stop-color="#e4f0f8"/>
+          <stop offset="50%"  stop-color="#aacbdf"/>
+          <stop offset="78%"  stop-color="#6a9db8"/>
+          <stop offset="100%" stop-color="#3a6e88"/>
+        </radialGradient>
+        <radialGradient id="glareGrad" cx="38%" cy="24%" r="32%">
+          <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.95"/>
+          <stop offset="55%"  stop-color="#ffffff" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="rimGrad" cx="50%" cy="88%" r="52%">
+          <stop offset="0%"   stop-color="#1e3a4a" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#1e3a4a" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="rimGrad2" cx="75%" cy="72%" r="35%">
+          <stop offset="0%"   stop-color="#2a5570" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#2a5570" stop-opacity="0"/>
+        </radialGradient>
+        <clipPath id="sphereClip">
+          <circle cx="75" cy="75" r="66"/>
+        </clipPath>
+      </defs>
+
+      <!-- Kugel -->
+      <circle cx="75" cy="75" r="66" fill="url(#sphereGrad)"/>
+      <circle cx="75" cy="75" r="66" fill="url(#rimGrad)"/>
+      <circle cx="75" cy="75" r="66" fill="url(#rimGrad2)"/>
+
+      <!-- Glanzpunkt -->
+      <ellipse cx="55" cy="45" rx="30" ry="22"
+               fill="url(#glareGrad)"
+               clip-path="url(#sphereClip)"/>
+
+      <!-- Kleiner zweiter Glanzpunkt -->
+      <ellipse cx="48" cy="38" rx="10" ry="7"
+               fill="white" opacity="0.55"
+               clip-path="url(#sphereClip)"/>
+
+      <!-- Orbit-Ring (rotiert) -->
+      <g class="orbit-ring">
+        <ellipse cx="75" cy="75" rx="66" ry="17"
+                 fill="none"
+                 stroke="rgba(74,143,168,0.32)"
+                 stroke-width="1.2"
+                 transform="rotate(-22 75 75)"/>
+      </g>
+
+      <!-- Kugel-Rand -->
+      <circle cx="75" cy="75" r="66"
+              fill="none"
+              stroke="rgba(255,255,255,0.18)"
+              stroke-width="1.2"/>
+    </svg>
+  </div>
+
+  <div class="hero-spacer"></div>
+
+  <div class="hero-wordmark">
+    <span class="hero-sir">Sir</span>
+    <span class="hero-name">Aaron Dawn</span>
+  </div>
+
+  <div class="hero-divider"></div>
+  <div class="hero-tagline">Sound beyond Gravity</div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+  </div>
+
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<div class="section" id="about">
+  <div class="section-label">About</div>
+  <div class="section-title">Sir Aaron Dawn</div>
+  <div class="about-text">
+    <p>
+      <strong>Sir Aaron Dawn</strong> ist ein Musiker und Produzent mit über drei Jahrzehnten im professionellen Musikgeschäft — heute mit seinem eigenen Sound, seinen eigenen Regeln.
+    </p>
+    <p>
+      Über sein Label <em>9Planets Independent Music</em> veröffentlicht er Ambient Elektro, atmosphärischen 90s Trance und cinematischen Dance — Klangwelten, die zwischen den Genres existieren und sich keiner Epoche fügen.
+    </p>
+    <p>
+      Electronic. Cinematic. Timeless.
+    </p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- LISTEN -->
+<div class="section" id="listen">
+  <div class="section-label">Music</div>
+  <div class="section-title">Releases</div>
+  <p class="listen-intro">
+    Alle Releases von Sir Aaron Dawn sind auf den großen Streaming-Plattformen verfügbar.
+  </p>
+  <div class="platform-buttons">
+
+    <a href="https://music.apple.com/de/artist/sir-aaron-dawn/1632434815"
+       target="_blank" rel="noopener" class="platform-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.877-.726 10.496 10.496 0 00-1.564-.15c-.04-.003-.083-.01-.124-.013H5.986c-.152.01-.303.017-.455.026C4.786.07 4.043.15 3.34.428 2.004.958 1.04 1.88.475 3.208A9.386 9.386 0 00.18 5.08a13.44 13.44 0 00-.09 1.57v10.7c.01.56.05 1.12.15 1.67.315 1.542 1.147 2.67 2.52 3.42.55.3 1.15.46 1.76.54.73.1 1.46.13 2.19.13h10.7c.56-.01 1.12-.05 1.67-.15 1.542-.315 2.67-1.148 3.42-2.52.3-.55.46-1.15.54-1.76.1-.73.13-1.46.13-2.19V8.65c-.01-.84-.05-1.68-.18-2.526zM11.844 12.648V8.35L19 6.2v4.35l-7.156 2.098zM9.17 17.8c-1.09 0-1.976-.884-1.976-1.974 0-1.09.885-1.975 1.976-1.975 1.09 0 1.974.885 1.974 1.975 0 1.09-.884 1.974-1.974 1.974zm9.83-3.2c-1.09 0-1.975-.884-1.975-1.974 0-1.09.885-1.975 1.975-1.975s1.974.885 1.974 1.975c0 1.09-.883 1.974-1.974 1.974z"/>
+      </svg>
+      Apple Music
+    </a>
+
+    <a href="https://open.spotify.com/intl-de/artist/2lB2qGRvPaLYFvZJbl7dDg?si=7xLfnLHRTyGGitPAHX9DSg"
+       target="_blank" rel="noopener" class="platform-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+      </svg>
+      Spotify
+    </a>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<div class="section" id="contact">
+  <div class="section-label">Contact</div>
+  <div class="section-title">Get in Touch</div>
+  <p class="contact-text">
+    Für Booking, Presse und Label-Anfragen stehe ich gerne zur Verfügung.
+  </p>
+  <a href="mailto:sir.aaron.dawn@gmail.com" class="contact-link">
+    sir.aaron.dawn@gmail.com
+  </a>
+</div>
+
+<div class="divider"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-wordmark">
+    <span class="footer-sir">Sir</span>
+    <span class="footer-name">Aaron Dawn</span>
+  </div>
+  <div class="footer-meta">
+    <div>9Planets Independent Music · LC 103453</div>
+    <div><a href="https://www.sir-aaron-dawn.com">sir-aaron-dawn.com</a></div>
+    <div class="footer-copy">© 2025 Sir Aaron Dawn. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  // Nav Glasmorphismus beim Scrollen
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
