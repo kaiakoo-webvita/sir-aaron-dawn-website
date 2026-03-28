@@ -73,6 +73,7 @@
   .nav-sir  { font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--accent); }
   .nav-name { font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--petrol); }
 
+  .nav-right { display: flex; align-items: center; gap: 2.5rem; }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
 
   .nav-links a {
@@ -84,6 +85,39 @@
     transition: color 0.3s;
   }
   .nav-links a:hover { color: var(--petrol); }
+
+  /* ── SPRACH-UMSCHALTER ── */
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(74,143,168,0.28);
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.45);
+  }
+
+  .lang-btn {
+    font-family: var(--font);
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: transparent;
+    border: none;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s;
+  }
+
+  .lang-btn.active {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .lang-btn:not(.active):hover {
+    color: var(--petrol);
+    background: rgba(74,143,168,0.08);
+  }
 
   /* ── HERO ── */
   .hero {
@@ -97,7 +131,6 @@
     position: relative;
   }
 
-  /* 3D Kugel */
   .hero-sphere {
     width: 150px;
     height: 150px;
@@ -106,7 +139,6 @@
     animation: float 7s ease-in-out infinite;
   }
 
-  /* Schatten unter der Kugel */
   .hero-sphere::after {
     content: '';
     position: absolute;
@@ -131,7 +163,6 @@
     50%       { transform: translateY(-14px); }
   }
 
-  /* Orbit-Ring rotiert langsam */
   .orbit-ring {
     animation: orbitSpin 18s linear infinite;
     transform-origin: 75px 75px;
@@ -142,7 +173,6 @@
     to   { transform: rotate(360deg); }
   }
 
-  /* Spacer zwischen Kugel und Wordmark */
   .hero-spacer { height: 2.8rem; }
 
   .hero-wordmark {
@@ -326,6 +356,25 @@
   }
   .contact-link:hover { color: var(--petrol); border-color: var(--petrol); }
 
+  /* ── IMPRESSUM ── */
+  .impressum-text {
+    color: var(--mid);
+    font-size: 13px;
+    line-height: 2;
+    max-width: 560px;
+  }
+  .impressum-text p { margin-bottom: 1.6rem; }
+  .impressum-text p:last-child { margin-bottom: 0; }
+  .impressum-text strong { color: var(--petrol); font-weight: 400; }
+  .impressum-text a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(74,143,168,0.22);
+    padding-bottom: 1px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .impressum-text a:hover { color: var(--petrol); border-color: var(--petrol); }
+
   /* ── FOOTER ── */
   footer {
     padding: 2rem 3rem 2.5rem;
@@ -374,16 +423,22 @@
     <span class="nav-sir">Sir</span>
     <span class="nav-name">Aaron Dawn</span>
   </a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#listen">Music</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about"     data-i18n="nav.about"></a></li>
+      <li><a href="#listen"    data-i18n="nav.music"></a></li>
+      <li><a href="#contact"   data-i18n="nav.contact"></a></li>
+      <li><a href="#impressum" data-i18n="nav.imprint"></a></li>
+    </ul>
+    <div class="lang-toggle">
+      <button class="lang-btn" id="btn-de" onclick="setLang('de')">DE</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="top">
-
   <div class="hero-sphere">
     <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -411,71 +466,47 @@
           <circle cx="75" cy="75" r="66"/>
         </clipPath>
       </defs>
-
-      <!-- Kugel -->
       <circle cx="75" cy="75" r="66" fill="url(#sphereGrad)"/>
       <circle cx="75" cy="75" r="66" fill="url(#rimGrad)"/>
       <circle cx="75" cy="75" r="66" fill="url(#rimGrad2)"/>
-
-      <!-- Glanzpunkt -->
-      <ellipse cx="55" cy="45" rx="30" ry="22"
-               fill="url(#glareGrad)"
-               clip-path="url(#sphereClip)"/>
-
-      <!-- Kleiner zweiter Glanzpunkt -->
-      <ellipse cx="48" cy="38" rx="10" ry="7"
-               fill="white" opacity="0.55"
-               clip-path="url(#sphereClip)"/>
-
-      <!-- Orbit-Ring (rotiert) -->
+      <ellipse cx="55" cy="45" rx="30" ry="22" fill="url(#glareGrad)" clip-path="url(#sphereClip)"/>
+      <ellipse cx="48" cy="38" rx="10" ry="7" fill="white" opacity="0.55" clip-path="url(#sphereClip)"/>
       <g class="orbit-ring">
         <ellipse cx="75" cy="75" rx="66" ry="17"
-                 fill="none"
-                 stroke="rgba(74,143,168,0.32)"
-                 stroke-width="1.2"
+                 fill="none" stroke="rgba(74,143,168,0.32)" stroke-width="1.2"
                  transform="rotate(-22 75 75)"/>
       </g>
-
-      <!-- Kugel-Rand -->
-      <circle cx="75" cy="75" r="66"
-              fill="none"
-              stroke="rgba(255,255,255,0.18)"
-              stroke-width="1.2"/>
+      <circle cx="75" cy="75" r="66" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
     </svg>
   </div>
 
   <div class="hero-spacer"></div>
-
   <div class="hero-wordmark">
     <span class="hero-sir">Sir</span>
     <span class="hero-name">Aaron Dawn</span>
   </div>
-
   <div class="hero-divider"></div>
   <div class="hero-tagline">Sound beyond Gravity</div>
-
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-  </div>
-
+  <div class="hero-scroll"><div class="scroll-line"></div></div>
 </section>
 
 <div class="divider"></div>
 
 <!-- ABOUT -->
 <div class="section" id="about">
-  <div class="section-label">About</div>
+  <div class="section-label" data-i18n="nav.about"></div>
   <div class="section-title">Sir Aaron Dawn</div>
-  <div class="about-text">
-    <p>
-      <strong>Sir Aaron Dawn</strong> ist ein Musiker und Produzent mit über drei Jahrzehnten im professionellen Musikgeschäft — heute mit seinem eigenen Sound, seinen eigenen Regeln.
-    </p>
-    <p>
-      Über sein Label <em>9Planets Independent Music</em> veröffentlicht er Ambient Elektro, atmosphärischen 90s Trance und cinematischen Dance — Klangwelten, die zwischen den Genres existieren und sich keiner Epoche fügen.
-    </p>
-    <p>
-      Electronic. Cinematic. Timeless.
-    </p>
+
+  <div class="about-text" data-lang="de">
+    <p><strong>Sir Aaron Dawn</strong> ist ein Musiker und Produzent mit über drei Jahrzehnten im professionellen Musikgeschäft — heute mit seinem eigenen Sound, seinen eigenen Regeln.</p>
+    <p>Über sein Label <em>9Planets Independent Music</em> veröffentlicht er Ambient Elektro, atmosphärischen 90s Trance und cinematischen Dance — Klangwelten, die zwischen den Genres existieren und sich keiner Epoche fügen.</p>
+    <p>Electronic. Cinematic. Timeless.</p>
+  </div>
+
+  <div class="about-text" data-lang="en">
+    <p><strong>Sir Aaron Dawn</strong> is a musician and producer with over three decades in the professional music industry — now writing his own sound, on his own terms.</p>
+    <p>Through his label <em>9Planets Independent Music</em>, he releases Ambient Elektro, atmospheric 90s Trance and cinematic Dance — sonic worlds that exist between genres and refuse to be bound by any single era.</p>
+    <p>Electronic. Cinematic. Timeless.</p>
   </div>
 </div>
 
@@ -483,13 +514,13 @@
 
 <!-- LISTEN -->
 <div class="section" id="listen">
-  <div class="section-label">Music</div>
-  <div class="section-title">Releases</div>
-  <p class="listen-intro">
-    Alle Releases von Sir Aaron Dawn sind auf den großen Streaming-Plattformen verfügbar.
-  </p>
-  <div class="platform-buttons">
+  <div class="section-label" data-i18n="nav.music"></div>
+  <div class="section-title" data-i18n="listen.title"></div>
 
+  <p class="listen-intro" data-lang="de">Alle Releases von Sir Aaron Dawn sind auf den großen Streaming-Plattformen verfügbar.</p>
+  <p class="listen-intro" data-lang="en">All releases by Sir Aaron Dawn are available on major streaming platforms.</p>
+
+  <div class="platform-buttons">
     <a href="https://music.apple.com/de/artist/sir-aaron-dawn/1632434815"
        target="_blank" rel="noopener" class="platform-btn">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -497,7 +528,6 @@
       </svg>
       Apple Music
     </a>
-
     <a href="https://open.spotify.com/intl-de/artist/2lB2qGRvPaLYFvZJbl7dDg?si=7xLfnLHRTyGGitPAHX9DSg"
        target="_blank" rel="noopener" class="platform-btn">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -505,7 +535,6 @@
       </svg>
       Spotify
     </a>
-
   </div>
 </div>
 
@@ -513,14 +542,79 @@
 
 <!-- CONTACT -->
 <div class="section" id="contact">
-  <div class="section-label">Contact</div>
-  <div class="section-title">Get in Touch</div>
-  <p class="contact-text">
-    Für Booking, Presse und Label-Anfragen stehe ich gerne zur Verfügung.
-  </p>
+  <div class="section-label" data-i18n="nav.contact"></div>
+  <div class="section-title" data-i18n="contact.title"></div>
+
+  <p class="contact-text" data-lang="de">Für Booking, Presse und Label-Anfragen stehe ich gerne zur Verfügung.</p>
+  <p class="contact-text" data-lang="en">Available for booking, press and label enquiries.</p>
+
   <a href="mailto:sir.aaron.dawn@gmail.com" class="contact-link">
     sir.aaron.dawn@gmail.com
   </a>
+</div>
+
+<div class="divider"></div>
+
+<!-- IMPRESSUM / IMPRINT -->
+<div class="section" id="impressum">
+  <div class="section-label" data-i18n="imprint.label"></div>
+  <div class="section-title" data-i18n="nav.imprint"></div>
+
+  <!-- DE -->
+  <div class="impressum-text" data-lang="de">
+    <p><strong>Angaben gemäß § 5 TMG</strong></p>
+    <p>
+      Michael Böhm<br>
+      Im Vogelgesang 43<br>
+      67346 Speyer
+    </p>
+    <p>
+      <strong>Kontakt</strong><br>
+      Telefon: <a href="tel:+491755224020">+49 175 522 4020</a><br>
+      E-Mail: <a href="mailto:sir.aaron.dawn@gmail.com">sir.aaron.dawn@gmail.com</a>
+    </p>
+    <p>
+      <strong>Beruf</strong><br>
+      Musiker / Musikproduzent (Freiberufler)<br>
+      Tätig unter dem Künstlernamen Sir Aaron Dawn
+    </p>
+    <p>
+      <strong>Hinweis zur Verantwortlichkeit für Inhalte</strong><br>
+      Als Diensteanbieter bin ich gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG bin ich als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
+    </p>
+    <p>
+      <strong>Urheberrecht</strong><br>
+      Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
+    </p>
+  </div>
+
+  <!-- EN -->
+  <div class="impressum-text" data-lang="en">
+    <p><strong>Information in accordance with § 5 TMG (German Telemedia Act)</strong></p>
+    <p>
+      Michael Böhm<br>
+      Im Vogelgesang 43<br>
+      67346 Speyer, Germany
+    </p>
+    <p>
+      <strong>Contact</strong><br>
+      Phone: <a href="tel:+491755224020">+49 175 522 4020</a><br>
+      Email: <a href="mailto:sir.aaron.dawn@gmail.com">sir.aaron.dawn@gmail.com</a>
+    </p>
+    <p>
+      <strong>Profession</strong><br>
+      Musician / Music Producer (Freelance)<br>
+      Operating under the artist name Sir Aaron Dawn
+    </p>
+    <p>
+      <strong>Liability for Content</strong><br>
+      As a service provider, I am responsible for my own content on these pages in accordance with general laws pursuant to § 7 para. 1 TMG. However, pursuant to §§ 8 to 10 TMG, I am not obligated to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity.
+    </p>
+    <p>
+      <strong>Copyright</strong><br>
+      The content and works created by the site operator on these pages are subject to German copyright law. Reproduction, editing, distribution and any kind of use beyond the limits of copyright law require the written consent of the respective author or creator.
+    </p>
+  </div>
 </div>
 
 <div class="divider"></div>
@@ -539,11 +633,70 @@
 </footer>
 
 <script>
-  // Nav Glasmorphismus beim Scrollen
+  /* ── NAV SCROLL ── */
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-  }, { passive: true });
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  /* ── ÜBERSETZUNGEN ── */
+  const i18n = {
+    de: {
+      'nav.about':    'About',
+      'nav.music':    'Music',
+      'nav.contact':  'Kontakt',
+      'nav.imprint':  'Impressum',
+      'imprint.label':'Rechtliches',
+      'listen.title': 'Releases',
+      'contact.title':'Schreib mir'
+    },
+    en: {
+      'nav.about':    'About',
+      'nav.music':    'Music',
+      'nav.contact':  'Contact',
+      'nav.imprint':  'Imprint',
+      'imprint.label':'Legal',
+      'listen.title': 'Releases',
+      'contact.title':'Get in Touch'
+    }
+  };
+
+  /* ── SPRACHE SETZEN ── */
+  function setLang(lang) {
+    /* html lang-Attribut */
+    document.documentElement.lang = lang;
+
+    /* data-lang Elemente ein-/ausblenden */
+    document.querySelectorAll('[data-lang]').forEach(el => {
+      el.style.display = el.dataset.lang === lang ? '' : 'none';
+    });
+
+    /* i18n-Texte */
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (i18n[lang] && i18n[lang][key]) el.textContent = i18n[lang][key];
+    });
+
+    /* Toggle-Buttons */
+    document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+    /* Auswahl im Browser merken */
+    try { localStorage.setItem('sad-lang', lang); } catch(e) {}
+  }
+
+  /* ── AUTO-ERKENNUNG beim Laden ── */
+  (function () {
+    /* 1. Manuelle Auswahl aus einem früheren Besuch */
+    try {
+      const stored = localStorage.getItem('sad-lang');
+      if (stored === 'de' || stored === 'en') { setLang(stored); return; }
+    } catch(e) {}
+
+    /* 2. Browser-Sprache auswerten */
+    const browserLang = (navigator.language || 'de').toLowerCase();
+    setLang(browserLang.startsWith('de') ? 'de' : 'en');
+  })();
 </script>
 
 </body>
